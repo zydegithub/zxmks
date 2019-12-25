@@ -190,7 +190,6 @@ export default {
       }, 1000);
     },
     closeAllPOI() {
-      debugger;
       this.poiLayers.forEach(item => {
         this.map.setLayoutProperty(item, 'visibility', 'none');
       });
