@@ -1,0 +1,176 @@
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+}
+
+#map {
+  height: 100%;
+  width: 100%;
+}
+
+#locInfo {
+  position: absolute;
+  bottom: 10px;
+  right: 5px;
+}
+
+
+/*pop框图层名样式*/
+
+.popup_attr_layer_title {
+  font-family: Microsoft YaHei, Helvetica, Arial, sans-serif;
+  font-weight: 550;
+  font-size: 14px;
+  position: relative;
+  bottom: 2px;
+}
+
+
+/*popup属性框样式
+*/
+
+.popup_attr_property_box {
+  font-family: Microsoft YaHei, Helvetica, Arial, sans-serif;
+  margin-left: 5px;
+  font-size: 12px;
+  color: gray;
+}
+
+/* 各按钮图标样式 */
+/* .big-icon {
+    background: url("images/image.svg") center center no-repeat;
+}
+
+.small-icon {
+    background: url("images/small.png") center center no-repeat;
+} */
+
+.pan-icon {
+  background: url("images/image.svg");
+  background-position-x: 1px;
+  background-position-y: -6px;
+  background-size: 100%;
+}
+
+.split-icon {
+  background: url("images/image.svg");
+  background-position-x: 1px;
+  background-position-y: -268px;
+  background-size: 100%;
+}
+
+.attr-icon {
+  background: url("images/image.svg");
+  background-position-x: 1px;
+  background-position-y: -118px;
+  background-size: 100%;
+}
+
+.distance-icon {
+  background: url("images/distance.svg") center center no-repeat;
+  /* background-position-x: 1px;
+    background-position-y: -118px;
+    background-size: 100%; */
+  background-size: 80%;
+}
+
+.area-icon {
+  background: url("images/area.svg") center center no-repeat;
+  /* background-position-x: 1px;
+    background-position-y: -118px;
+    background-size: 100%; */
+  background-size: 80%;
+}
+
+.select-icon {
+  background: url("images/select.png") center center no-repeat;
+}
+
+.search-icon {
+  background: url("images/image.svg");
+  background-position-x: 1px;
+  background-position-y: -230px;
+  background-size: 100%;
+}
+
+.full-icon {
+  background: url("images/image.svg");
+  background-position-x: 1px;
+  background-position-y: -380px;
+  background-size: 100%;
+}
+
+.collapseBtn {
+  background: url("images/image.svg");
+  background-position-x: -6px;
+  background-position-y: 81px;
+  background-size: 200%;
+}
+
+.collapse-icon {
+  background: url("images/image.svg");
+  background-position-x: 1px;
+  background-position-y: 232px;
+  background-size: 100%;
+}
+
+.open-icon {
+  background: url("images/image.svg");
+  background-position-x: 1px;
+  background-position-y: 270px;
+  background-size: 100%;
+}
+
+.marker {
+  background: url("images/ArtificialSurfaces.png") center center no-repeat;
+
+}
+
+/* 鼠标样式 */
+
+.identify_cursor {
+  cursor: url("cursor_img/identify.cur"), default !important;
+}
+
+.selectByPoint_cursor {
+  cursor: url("cursor_img/selectByPoint.cur"), default !important;
+}
+
+.selectByRect_cursor {
+  cursor: url("cursor_img/selectByRect.cur"), default !important;
+}
+
+.selectByCircle_cursor {
+  cursor: url("cursor_img/selectByCircle.cur"), default !important;
+}
+
+.selectByRegion_cursor {
+  cursor: url("cursor_img/selectByRegion.cur"), default !important;
+}
+
+
+/*工具条控件*/
+.toolbar-box {
+  width: 240px;
+  height: 33px;
+}
+
+.toolbar-box button.mapboxgl-ctrl-icon {
+  height: 33px;
+  background-color: #16116299;
+}
+
+.toolbar-box .toolbar-item {
+  display: inline-block;
+  height: 38px;
+  line-height: 38px;
+  padding: 0 5px;
+  border: 1px solid #ddd;
+  background-color: #2d8cf0;
+  color: #fff;
+  border-radius: 4px;
+  cursor: pointer;
+}
