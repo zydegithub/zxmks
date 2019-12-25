@@ -13,9 +13,13 @@
           @click="searchPoi(item)"
         >{{item}}</el-button>
       </div>
+      <div class="homeItem1">
+        <span class="spanStyle">简介</span>
+        <span class="spanStyle">{{ text[name] }}</span>
+      </div>
       <div class="homeItem2">
         <span class="spanStyle">美图</span>
-        <swiperPort></swiperPort>
+        <swiperPort :name="name"></swiperPort>
       </div>
     </div>
   </div>
@@ -66,6 +70,12 @@ export default {
         });
       },
       deep: true
+    },
+    name: {
+      handler: function(val, old) {
+        debugger;
+        console.log(CONFIG.text[this.name]);
+      }
     }
   },
   components: {
@@ -78,6 +88,9 @@ export default {
         closeButton: false,
         closeOnClick: false
       });
+    },
+    text: function() {
+      return CONFIG.text;
     }
   },
   methods: {
@@ -98,7 +111,6 @@ export default {
         epsg: 'EPSG:4490',
         preserveDrawingBuffer: true
       });
-      debugger;
       var that = this;
       this.map.on('load', async() => {
         this.mapbuild = true;
@@ -227,12 +239,15 @@ export default {
 #leftAside {
   position: absolute;
   top: 0px;
-  bottom: 0px;
+  bottom: 24px;
   right: 0px;
   width: 400px;
   background-color: rgba(61, 71, 128, 0.3);
 }
-.homeItem2 {
+.homeItem1 {
+  // border: 1px solid #fff;
+  height: 46%;
+  overflow-y: auto;
 }
 .titleSpan {
   font-size: 20px;
@@ -251,5 +266,8 @@ export default {
 .buttonStyle {
   margin-right: 10px;
   margin-top: 10px;
+}
+::-webkit-scrollbar {
+  display: none;
 }
 </style>

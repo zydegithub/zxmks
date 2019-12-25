@@ -3,28 +3,20 @@
   <div class="gallery-thumbs-box">
     <div class="swiper-container gallery-top">
       <div class="swiper-wrapper">
-        <div class="swiper-slide">
-          <img src="static/lib/地坛.jpg" alt preview="index" />
-        </div>
-        <div class="swiper-slide">
-          <img src="static/lib/故宫.jpg" alt preview="index" />
-        </div>
-        <div class="swiper-slide">
-          <img src="static/lib/鸟巢.jpg" alt preview="index" />
+        <div class="swiper-slide" v-for="item in imgUrls[name]" :key="item">
+          <img :src="'static/lib/images/课设素材照片/'+name+'/'+item+'.jpg'" alt preview="index" />
         </div>
       </div>
     </div>
 
     <div class="swiper-container gallery-bottom">
       <div class="swiper-wrapper">
-        <div class="swiper-slide slide1">
-          <img src="static/lib/地坛.jpg" alt :class="{ heighImg: currIndex == 0 }" />
-        </div>
-        <div class="swiper-slide slide1">
-          <img src="static/lib/故宫.jpg" alt :class="{ heighImg: currIndex == 1 }" />
-        </div>
-        <div class="swiper-slide slide1">
-          <img src="static/lib/鸟巢.jpg" alt :class="{ heighImg: currIndex == 2 }" />
+        <div class="swiper-slide slide1" v-for="(item,index) in imgUrls[name]" :key="item">
+          <img
+            :src="'static/lib/images/课设素材照片/'+name+'/'+item+'.jpg'"
+            alt
+            :class="{ heighImg: currIndex == index }"
+          />
         </div>
       </div>
     </div>
@@ -39,13 +31,55 @@ export default {
   name: 'Swiper',
   data() {
     return {
-      currIndex: 0
+      currIndex: 0,
+      imgUrls: {
+        北京动物园: ['动物园1', '动物园2', '动物园3', '动物园4', '动物园5'],
+        北京植物园: ['植物1', '植物2', '植物3', '植物4', '植物5', '植物6'],
+        朝阳公园: ['朝阳1', '朝阳2', '朝阳3', '朝阳4', '朝阳5'],
+        地坛: ['地坛1', '地坛2', '地坛3', '地坛4', '地坛5'],
+        故宫: ['故宫1', '故宫2', '故宫3', '故宫4', '故宫5'],
+        鸟巢: ['鸟巢1', '鸟巢2', '鸟巢3'],
+        什刹海: ['什刹海1', '什刹海2', '什刹海3', '什刹海4', '什刹海5'],
+        天安门广场: [
+          '天安门广场1',
+          '天安门广场2',
+          '天安门广场3',
+          '天安门广场4',
+          '天安门广场5'
+        ],
+        天坛: ['天坛1', '天坛2', '天坛3', '天坛4', '天坛5'],
+        香山: ['香山1', '香山2', '香山3', '香山4', '香山5'],
+        颐和园: ['颐和园1', '颐和园2', '颐和园3', '颐和园4', '颐和园5'],
+        圆明园: ['圆明园1', '圆明园2', '圆明园3', '圆明园4', '圆明园5'],
+        长城: ['长城1', '长城2', '长城3', '长城4', '长城5'],
+        北京欢乐谷: ['北京欢乐谷1', '北京欢乐谷2', '北京欢乐谷3']
+      }
     };
+  },
+  watch: {
+    name: {
+      handler: function(val, oldVal) {
+        this.$nextTick(() => {
+          // 销毁轮播图 初始化
+          if (this.galleryTop) {
+            this.galleryTop.destroy(false);
+            this.galleryThumbs.destroy(false);
+            this.currIndex = 0;
+          }
+          this.swiperInit();
+          this.$previewRefresh();
+        });
+      },
+      deep: true
+    }
   },
   components: {},
   mounted() {
     this.swiperInit();
     this.$previewRefresh();
+  },
+  props: {
+    name: String
   },
   methods: {
     swiperInit() {
