@@ -2,16 +2,24 @@
   <div id="mainMap">
     <div id="map"></div>
     <MousePostion v-if="mapbuild" :map="map"></MousePostion>
+    <div id="searchDiv">
+      <el-input placeholder="请输入内容" v-model="input" class="input-with-select" @focus="focuInput">
+        <el-button slot="append" icon="el-icon-search"></el-button>
+      </el-input>
+    </div>
+    <div id="listDiv" v-show="listShow">
+      <div>
+        <el-divider></el-divider>
+        <div>
+
+        </div>
+      </div>
+    </div>
     <div id="leftAside" v-if="showAside">
       <div>
         <span class="titleSpan">{{ name }}</span>
         <span class="spanStyle">搜周边</span>
-        <el-button
-          class="buttonStyle"
-          v-for="item in poiLayers"
-          :key="item"
-          @click="searchPoi(item)"
-        >{{item}}</el-button>
+        <el-button class="buttonStyle" v-for="item in poiLayers" :key="item" @click="searchPoi(item)">{{item}}</el-button>
       </div>
       <div class="homeItem1">
         <span class="spanStyle">简介</span>
@@ -46,7 +54,8 @@ export default {
         '银行',
         '餐饮'
       ],
-      markerArr: []
+      markerArr: [],
+      listShow: false
     };
   },
   mounted() {
@@ -220,6 +229,9 @@ export default {
           });
         }
       }
+    },
+    focuInput() {
+      this.listShow = true;
     }
   }
 };
@@ -235,6 +247,28 @@ export default {
   bottom: 0px;
   left: 0px;
   right: 0px;
+}
+#searchDiv {
+  position: absolute;
+  top: 50px;
+  left: 30px;
+  width: 400px;
+  box-shadow: 4px 4px 5px #888888;
+}
+#listDiv {
+  position: absolute;
+  top: 90px;
+  left: 30px;
+  height: 660px;
+  width: 400px;
+  background-color: #fff;
+  box-shadow: 4px 4px 5px #888888;
+}
+.el-select .el-input {
+  width: 130px;
+}
+.input-with-select .el-input-group__prepend {
+  background-color: #fff;
 }
 #leftAside {
   position: absolute;
