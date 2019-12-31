@@ -21,9 +21,9 @@ import VectorTileSource from 'ol/source/VectorTile.js';
 import { get as getProjection } from 'ol/proj.js';
 import { createXYZ } from 'ol/tilegrid.js';
 import Projection from 'ol/proj/Projection.js';
-import applyStyle from 'ol-mapbox-style';
+import stylefunction from 'ol-mapbox-style';
 
-import stylefunction from 'ol-mapbox-style/stylefunction';
+// import stylefunction from 'ol-mapbox-style/stylefunction';
 import { defaults as defaultControls, ScaleLine } from 'ol/control.js';
 import TileLayer from 'ol/layer/Tile.js';
 import TileWMS from 'ol/source/TileWMS.js';
@@ -97,29 +97,24 @@ export default {
         })
       });
       map.addLayer(layer);
-      debugger;
-      layer
-        .getSource()
-        .getTileGrid()
-        .getResolutions();
       axios
         .get(
           'http://vtctest.geo-compass.com/geocmap/api/v1/map/10001000189/publish'
         )
         .then(function(response) {
-          debugger;
-          applyStyle(
-            layer,
-            response.data,
-            ['0'],
-            undefined,
-            layer
-              .getSource()
-              .getTileGrid()
-              .getResolutions()
-          ).then(res => {
-            debugger;
-          });
+          // applyStyle(
+          //   layer,
+          //   response.data,
+          //   ['0'],
+          //   undefined,
+          //   layer
+          //     .getSource()
+          //     .getTileGrid()
+          //     .getResolutions()
+          // ).then(res => {
+          //   debugger;
+          // });
+          stylefunction(layer, response.data, ['0']);
         });
       // olms(map, 'http://vtctest.geo-compass.com/api/v1/map/10001000034/publish?access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMSIsImlhdCI6MTU0ODg5NTc0NiwiZXhwIjoxNTQ5NTAwNTQ2fQ.6ayfWhSA6rqtvfYP3Qrx2aIPS1LUtMy8PIB1JLJCp9g');
       map.on('singleclick', function(e) {

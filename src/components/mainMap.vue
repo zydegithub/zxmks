@@ -37,12 +37,21 @@
       <br />
       <i class="el-icon-location"></i>
       <span class="addressSpan" v-if="list[name].address">{{list[name].address}}</span>
+      <el-button class="searchBtn" type="text" @click="dialogVisible = true">搜周边</el-button>
       <el-divider></el-divider>
       <span class="spanStyle">简介</span>
       <div class="homeItem1">
         <span class="spanStyle2">{{ text[name] }}</span>
       </div>
     </div>
+    <el-dialog title="搜周边" :visible.sync="dialogVisible" width="24%">
+      <el-button
+        class="buttonStyle"
+        v-for="item in poiLayers"
+        :key="item"
+        @click="searchPoi(item)"
+      >{{item}}</el-button>
+    </el-dialog>
     <!-- <div id="leftAside" v-if="showAside">
       <div>
         <span class="titleSpan">{{ name }}</span>
@@ -90,7 +99,8 @@ export default {
       ],
       markerArr: [],
       listShow: false,
-      containShow: false
+      containShow: false,
+      dialogVisible: false
     };
   },
   mounted() {
@@ -214,6 +224,7 @@ export default {
       window.map = this.map;
     },
     searchPoi(item) {
+      this.dialogVisible = false;
       if (this.btnType == item) {
         this.btnType = '';
         this.closeAllPOI();
@@ -343,6 +354,7 @@ export default {
 .nameP {
   margin-left: 20px;
   font-size: 18px;
+  font-family: inherit;
 }
 .priceSpan {
   margin-top: 6px;
@@ -371,7 +383,6 @@ export default {
   background-color: rgba(61, 71, 128, 0.3);
 }
 .homeItem1 {
-  // border: 1px solid #fff;
   height: 46%;
   overflow-y: auto;
 }
@@ -388,9 +399,10 @@ export default {
   margin-left: 20px;
   display: block;
   margin-top: 6px;
+  font-family: inherit;
 }
 .spanStyle2 {
-  font-size: 16px;
+  font-size: 14px;
   color: #000;
   margin-left: 20px;
   display: block;
@@ -475,6 +487,9 @@ li:hover .listLeft p {
   float: left;
   font-size: 14px;
   max-width: 250px;
+}
+.searchBtn {
+  float: right;
 }
 .backBtn {
   position: absolute;
