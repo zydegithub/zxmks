@@ -1,25 +1,58 @@
 <template>
   <div id="mainMap">
     <div id="map"></div>
+    <div id="topDiv"></div>
     <MousePostion v-if="mapbuild" :map="map"></MousePostion>
     <div id="searchDiv">
-      <el-input placeholder="请输入内容" v-model="input" class="input-with-select" @focus="focuInput">
-        <el-button slot="append" icon="el-icon-search"></el-button>
+      <el-input
+        placeholder="请输入内容"
+        v-model="input"
+        class="input-with-select"
+        @focus="focuInput"
+        v-on:keyup.enter="searchPlace"
+      >
+        <el-button slot="append" icon="el-icon-search" @click="searchPlace"></el-button>
       </el-input>
     </div>
     <div id="listDiv" v-show="listShow">
-      <div>
-        <el-divider></el-divider>
-        <div>
-
-        </div>
+      <ul>
+        <li v-for="(data, idx) in list" :key="idx" @click="fitPlace(data, idx)">
+          <el-divider></el-divider>
+          <div class="listLeft">
+            <p>{{data.id}}.{{idx}}</p>
+            <span v-if="data.price">门票 ¥{{data.price}}</span>
+            <span v-if="data.grade">{{data.grade}}</span>
+            <p>{{data.address}}</p>
+          </div>
+          <img class="img" :src="'static/lib/images/课设素材照片/'+idx+'/'+data.photo+'.jpg'" />
+        </li>
+      </ul>
+    </div>
+    <div id="containDiv" v-if="containShow">
+      <div class="backBtn" @click="goBack">« 返回</div>
+      <swiperPort :name="name"></swiperPort>
+      <p class="nameP">{{name}}</p>
+      <span class="priceSpan" v-if="list[name].price">门票 ¥{{list[name].price}}/人</span>
+      <span class="priceSpan" v-if="list[name].grade">{{list[name].grade}}</span>
+      <br />
+      <i class="el-icon-location"></i>
+      <span class="addressSpan" v-if="list[name].address">{{list[name].address}}</span>
+      <el-divider></el-divider>
+      <span class="spanStyle">简介</span>
+      <div class="homeItem1">
+        <span class="spanStyle2">{{ text[name] }}</span>
       </div>
     </div>
-    <div id="leftAside" v-if="showAside">
+    <!-- <div id="leftAside" v-if="showAside">
       <div>
         <span class="titleSpan">{{ name }}</span>
         <span class="spanStyle">搜周边</span>
-        <el-button class="buttonStyle" v-for="item in poiLayers" :key="item" @click="searchPoi(item)">{{item}}</el-button>
+        <el-button
+          class="buttonStyle"
+          v-for="item in poiLayers"
+          :key="item"
+          @click="searchPoi(item)"
+        >{{item}}</el-button>
       </div>
       <div class="homeItem1">
         <span class="spanStyle">简介</span>
@@ -29,7 +62,7 @@
         <span class="spanStyle">美图</span>
         <swiperPort :name="name"></swiperPort>
       </div>
-    </div>
+    </div>-->
   </div>
 </template>
 
@@ -42,6 +75,7 @@ export default {
     return {
       mapbuild: false,
       map: null,
+      input: '',
       showAside: false,
       btnType: '',
       name: '',
@@ -55,7 +89,8 @@ export default {
         '餐饮'
       ],
       markerArr: [],
-      listShow: false
+      listShow: false,
+      containShow: false
     };
   },
   mounted() {
@@ -82,7 +117,6 @@ export default {
     },
     name: {
       handler: function(val, old) {
-        debugger;
         console.log(CONFIG.text[this.name]);
       }
     }
@@ -100,6 +134,9 @@ export default {
     },
     text: function() {
       return CONFIG.text;
+    },
+    list: function() {
+      return CONFIG.listPoi;
     }
   },
   methods: {
@@ -232,14 +269,47 @@ export default {
     },
     focuInput() {
       this.listShow = true;
+    },
+    fitPlace(data) {
+      this.map.flyTo({
+        center: CONFIG.geojson.features[data.id - 1].geometry.coordinates,
+        zoom: 15,
+        essential: true
+      });
+      this.name = CONFIG.geojson.features[data.id - 1].properties.message;
+      this.listShow = false;
+      this.containShow = true;
+    },
+    searchPlace() {
+      var id = this.list[this.input].id;
+      this.map.flyTo({
+        center: CONFIG.geojson.features[id - 1].geometry.coordinates,
+        zoom: 15,
+        essential: true
+      });
+      this.name = CONFIG.geojson.features[id - 1].properties.message;
+      this.listShow = false;
+      this.containShow = true;
+    },
+    goBack() {
+      this.listShow = true;
+      this.containShow = false;
     }
   }
 };
 </script>
-<style lang="scss" scoped>
+<style  scoped>
 #mainMap {
   width: 100%;
   height: 100%;
+}
+#topDiv {
+  position: absolute;
+  top: 0px;
+  height: 70px;
+  width: 100%;
+  background-color: #2196f3;
+  box-shadow: 4px 4px 5px #888888;
 }
 #map {
   position: absolute;
@@ -250,19 +320,41 @@ export default {
 }
 #searchDiv {
   position: absolute;
-  top: 50px;
+  top: 80px;
   left: 30px;
   width: 400px;
   box-shadow: 4px 4px 5px #888888;
 }
-#listDiv {
+#listDiv,
+#containDiv {
   position: absolute;
-  top: 90px;
+  top: 120px;
   left: 30px;
   height: 660px;
   width: 400px;
   background-color: #fff;
   box-shadow: 4px 4px 5px #888888;
+  overflow-y: auto;
+  text-align: right;
+}
+#containDiv {
+  text-align: left;
+}
+.nameP {
+  margin-left: 20px;
+  font-size: 18px;
+}
+.priceSpan {
+  margin-top: 6px;
+  margin-left: 20px;
+  font-size: 14px;
+}
+.addressSpan {
+  font-size: 14px;
+}
+.el-icon-location {
+  margin-top: 6px;
+  margin-left: 20px;
 }
 .el-select .el-input {
   width: 130px;
@@ -297,11 +389,104 @@ export default {
   display: block;
   margin-top: 6px;
 }
+.spanStyle2 {
+  font-size: 16px;
+  color: #000;
+  margin-left: 20px;
+  display: block;
+  margin-top: 6px;
+  text-indent: 30px;
+}
 .buttonStyle {
   margin-right: 10px;
   margin-top: 10px;
 }
-::-webkit-scrollbar {
-  display: none;
+#listDiv::-webkit-scrollbar {
+  width: 6px;
+  height: 10px;
+}
+#listDiv::-webkit-scrollbar-thumb {
+  background-color: #b8b8b8;
+  /* -webkit-border-radius: 6px; */
+  outline: 2px solid #fff;
+  outline-offset: -2px;
+  /* border: 2px solid #fff; */
+  //   filter: alpha(opacity = 50);
+  -moz-opacity: 0.5;
+  -khtml-opacity: 0.5;
+  opacity: 0.5;
+}
+#listDiv::-webkit-scrollbar-thumb:hover {
+  background-color: #878987;
+  /* -webkit-border-radius: 6px; */
+}
+.homeItem1::-webkit-scrollbar {
+  width: 6px;
+  height: 10px;
+}
+.homeItem1::-webkit-scrollbar-thumb {
+  background-color: #b8b8b8;
+  /* -webkit-border-radius: 6px; */
+  outline: 2px solid #fff;
+  outline-offset: -2px;
+  /* border: 2px solid #fff; */
+  //   filter: alpha(opacity = 50);
+  -moz-opacity: 0.5;
+  -khtml-opacity: 0.5;
+  opacity: 0.5;
+}
+.homeItem1::-webkit-scrollbar-thumb:hover {
+  background-color: #878987;
+  /* -webkit-border-radius: 6px; */
+}
+ul {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  clear: both;
+}
+li {
+  display: list-item;
+  cursor: pointer;
+  margin-left: 16px;
+  margin-right: 16px;
+  margin-top: 14px;
+  text-align: -webkit-match-parent;
+}
+li:hover .listLeft span {
+  color: #2196f3;
+}
+li:hover .listLeft p {
+  color: #2196f3;
+}
+.img {
+  width: 100px;
+  height: 80px;
+  position: relative;
+  top: 4px;
+  right: 4px;
+}
+.el-divider--horizontal {
+  margin: 12px 0px;
+}
+.listLeft {
+  margin-top: 4px;
+  text-align: left;
+  float: left;
+  font-size: 14px;
+  max-width: 250px;
+}
+.backBtn {
+  position: absolute;
+  background-color: #878987;
+  width: 50px;
+  height: 22px;
+  left: 20px;
+  top: 20px;
+  text-align: center;
+  z-index: 2;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
 }
 </style>

@@ -8,18 +8,6 @@
         </div>
       </div>
     </div>
-
-    <div class="swiper-container gallery-bottom">
-      <div class="swiper-wrapper">
-        <div class="swiper-slide slide1" v-for="(item,index) in imgUrls[name]" :key="item">
-          <img
-            :src="'static/lib/images/课设素材照片/'+name+'/'+item+'.jpg'"
-            alt
-            :class="{ heighImg: currIndex == index }"
-          />
-        </div>
-      </div>
-    </div>
   </div>
 </template>
 
@@ -63,7 +51,6 @@ export default {
           // 销毁轮播图 初始化
           if (this.galleryTop) {
             this.galleryTop.destroy(false);
-            this.galleryThumbs.destroy(false);
             this.currIndex = 0;
           }
           this.swiperInit();
@@ -84,15 +71,6 @@ export default {
   methods: {
     swiperInit() {
       var that = this;
-      var galleryThumbs = new Swiper('.gallery-bottom', {
-        spaceBetween: 10,
-        slidesPerView: 3,
-        // freeMode: true,
-        pagination: '.swiper-pagination',
-        //  slidesPerView:'auto',
-        watchSlidesVisibility: true,
-        watchSlidesProgress: true
-      });
       var galleryTop = new Swiper('.gallery-top', {
         spaceBetween: 20,
         slidesPerView: 1,
@@ -103,9 +81,9 @@ export default {
         pagination: {
           el: '.swiper-pagination2' // 分页器 -
         },
-        thumbs: {
-          swiper: galleryThumbs
-        },
+        // thumbs: {
+        //   swiper: galleryThumbs
+        // },
         on: {
           slideChangeTransitionStart: function() {
             that.currIndex = this.realIndex;
@@ -127,7 +105,7 @@ export default {
 <style  scoped>
 .gallery-thumbs-box {
   width: 100%;
-  height: 100%;
+  /* height: 100%; */
   overflow: auto;
 }
 .swiper-container {
