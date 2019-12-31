@@ -52,26 +52,6 @@
         @click="searchPoi(item)"
       >{{item}}</el-button>
     </el-dialog>
-    <!-- <div id="leftAside" v-if="showAside">
-      <div>
-        <span class="titleSpan">{{ name }}</span>
-        <span class="spanStyle">搜周边</span>
-        <el-button
-          class="buttonStyle"
-          v-for="item in poiLayers"
-          :key="item"
-          @click="searchPoi(item)"
-        >{{item}}</el-button>
-      </div>
-      <div class="homeItem1">
-        <span class="spanStyle">简介</span>
-        <span class="spanStyle">{{ text[name] }}</span>
-      </div>
-      <div class="homeItem2">
-        <span class="spanStyle">美图</span>
-        <swiperPort :name="name"></swiperPort>
-      </div>
-    </div>-->
   </div>
 </template>
 
@@ -85,7 +65,6 @@ export default {
       mapbuild: false,
       map: null,
       input: '',
-      showAside: false,
       btnType: '',
       name: '',
       poiLayers: [
@@ -186,7 +165,7 @@ export default {
               essential: true
             });
             that.name = marker.properties.message;
-            that.showAside = true;
+            that.containShow = true;
           });
           // add marker to map
           new mapboxgl.Marker(el)
@@ -374,24 +353,9 @@ export default {
 .input-with-select .el-input-group__prepend {
   background-color: #fff;
 }
-#leftAside {
-  position: absolute;
-  top: 0px;
-  bottom: 24px;
-  right: 0px;
-  width: 400px;
-  background-color: rgba(61, 71, 128, 0.3);
-}
 .homeItem1 {
   height: 46%;
   overflow-y: auto;
-}
-.titleSpan {
-  font-size: 20px;
-  color: #000;
-  margin-left: 20px;
-  display: block;
-  margin-top: 6px;
 }
 .spanStyle {
   font-size: 16px;
