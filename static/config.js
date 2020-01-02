@@ -271,7 +271,7 @@ const CONFIG = {
       id: 2,
       price: '25',
       grade: '4A景区',
-      address: '北京市海淀区中关村北大街与荷清路交汇处附近',
+      address: '北京市海淀区中关村北大街与荷清路交汇处',
       photo: '圆明园1'
     },
     '故宫': {

@@ -1,7 +1,9 @@
 <template>
   <div id="mainMap">
     <div id="map"></div>
-    <div id="topDiv"></div>
+    <div id="topDiv">
+      <span class="topSpan">北京市旅游信息系统</span>
+    </div>
     <MousePostion v-if="mapbuild" :map="map"></MousePostion>
     <div id="searchDiv">
       <el-input
@@ -56,25 +58,25 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
-import MousePostion from './MousePosition';
-import swiperPort from './swiperPort';
+import { mapActions } from "vuex";
+import MousePostion from "./MousePosition";
+import swiperPort from "./swiperPort";
 export default {
   data() {
     return {
       mapbuild: false,
       map: null,
-      input: '',
-      btnType: '',
-      name: '',
+      input: "",
+      btnType: "",
+      name: "",
       poiLayers: [
-        '停车场',
-        '加油站',
-        '娱乐场所',
-        '旅馆酒店',
-        '购物',
-        '银行',
-        '餐饮'
+        "停车场",
+        "加油站",
+        "娱乐场所",
+        "旅馆酒店",
+        "购物",
+        "银行",
+        "餐饮"
       ],
       markerArr: [],
       listShow: false,
@@ -89,15 +91,15 @@ export default {
     btnType: {
       handler: function(val, old) {
         var that = this;
-        this.map.on('mouseenter', val, function(e) {
-          that.map.getCanvas().style.cursor = 'pointer';
+        this.map.on("mouseenter", val, function(e) {
+          that.map.getCanvas().style.cursor = "pointer";
           var coordinates = e.features[0].geometry.coordinates.slice();
           while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
             coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
           }
           that.popup
             .setLngLat(coordinates)
-            .setHTML('<p>' + e.features[0].properties.name + '</p>')
+            .setHTML("<p>" + e.features[0].properties.name + "</p>")
             .addTo(that.map);
           console.log(e.features[0]);
         });
@@ -129,36 +131,36 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['getAsideBar']),
+    ...mapActions(["getAsideBar"]),
     initMap() {
       if (!mapboxgl.supported()) {
         this.$Message.warning({
-          content: '您的浏览器不支持WebGL,请升级到最新版本。',
+          content: "您的浏览器不支持WebGL,请升级到最新版本。",
           duration: 0
         });
         return;
       }
       this.map = new mapboxgl.Map({
-        container: 'map',
-        style: 'http://yjqz.geo-compass.com/api/v1/styles/5',
+        container: "map",
+        style: "http://yjqz.geo-compass.com/api/v1/styles/5",
         center: [116.3941, 39.9006],
         zoom: 10,
-        epsg: 'EPSG:4490',
+        epsg: "EPSG:4490",
         preserveDrawingBuffer: true
       });
       var that = this;
-      this.map.on('load', async() => {
+      this.map.on("load", async () => {
         this.mapbuild = true;
         CONFIG.geojson.features.forEach(function(marker) {
           // create a DOM element for the marker
-          var el = document.createElement('div');
-          el.className = 'marker';
+          var el = document.createElement("div");
+          el.className = "marker";
           el.style.backgroundImage =
-            'url(./static/lib/' + marker.properties.message + '.jpg)';
-          el.style.width = marker.properties.iconSize[0] + 'px';
-          el.style.height = marker.properties.iconSize[1] + 'px';
-          el.style.backgroundRepeat = 'round';
-          el.addEventListener('click', function() {
+            "url(./static/lib/" + marker.properties.message + ".jpg)";
+          el.style.width = marker.properties.iconSize[0] + "px";
+          el.style.height = marker.properties.iconSize[1] + "px";
+          el.style.backgroundRepeat = "round";
+          el.addEventListener("click", function() {
             that.map.flyTo({
               center: marker.geometry.coordinates,
               zoom: 15,
@@ -189,10 +191,10 @@ export default {
           this.closeAllPOI();
         }, 1000);
       });
-      this.map.on('zoomend', this.isShowVecLeng);
-      this.map.on('moveend', this.isShowVecLeng);
-      this.map.on('mouseleave', that.btnType, function() {
-        that.map.getCanvas().style.cursor = '';
+      this.map.on("zoomend", this.isShowVecLeng);
+      this.map.on("moveend", this.isShowVecLeng);
+      this.map.on("mouseleave", that.btnType, function() {
+        that.map.getCanvas().style.cursor = "";
         that.popup.remove();
       });
       this.measureControl = new MeasureControl({
@@ -205,7 +207,7 @@ export default {
     searchPoi(item) {
       this.dialogVisible = false;
       if (this.btnType == item) {
-        this.btnType = '';
+        this.btnType = "";
         this.closeAllPOI();
         if (this.markerArr.length > 0) {
           for (let i = 0; i < this.markerArr.length; i++) {
@@ -223,7 +225,7 @@ export default {
         }
         this.markerArr = [];
       }
-      this.map.setLayoutProperty(item, 'visibility', 'visible');
+      this.map.setLayoutProperty(item, "visibility", "visible");
       var that = this;
       setTimeout(() => {
         var features = this.map.queryRenderedFeatures({ layers: [item] });
@@ -239,11 +241,11 @@ export default {
     },
     closeAllPOI() {
       this.poiLayers.forEach(item => {
-        this.map.setLayoutProperty(item, 'visibility', 'none');
+        this.map.setLayoutProperty(item, "visibility", "none");
       });
     },
     isShowVecLeng() {
-      if (this.btnType != '') {
+      if (this.btnType != "") {
         var features = this.map.queryRenderedFeatures({
           layers: [this.btnType]
         });
@@ -300,6 +302,12 @@ export default {
   width: 100%;
   background-color: #2196f3;
   box-shadow: 4px 4px 5px #888888;
+  text-align: center;
+}
+.topSpan {
+  font-size: 30px;
+  color: aliceblue;
+  line-height: 72px;
 }
 #map {
   position: absolute;
@@ -341,6 +349,7 @@ export default {
   font-size: 14px;
 }
 .addressSpan {
+  max-width: 280px;
   font-size: 14px;
 }
 .el-icon-location {
