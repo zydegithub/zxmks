@@ -292,6 +292,14 @@ export default {
     goBack() {
       this.listShow = true;
       this.containShow = false;
+      this.btnType = "";
+      this.closeAllPOI();
+      if (this.markerArr.length > 0) {
+        for (let i = 0; i < this.markerArr.length; i++) {
+          this.markerArr[i].remove();
+        }
+        this.markerArr = [];
+      }
     }
   }
 };
