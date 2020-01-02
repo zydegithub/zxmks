@@ -5,6 +5,12 @@
       <span class="topSpan">北京市旅游信息系统</span>
     </div>
     <MousePostion v-if="mapbuild" :map="map"></MousePostion>
+    <div id="weatherDiv">
+      <span class="citySpan">北京</span>
+      <el-divider direction="vertical"></el-divider>
+      <span class="weatherSpan">晴</span>
+      <span class="weatherSpan">4/-6℃</span>
+    </div>
     <div id="searchDiv">
       <el-input
         placeholder="请输入内容"
@@ -316,12 +322,31 @@ export default {
   left: 0px;
   right: 0px;
 }
+#weatherDiv {
+  position: absolute;
+  top: 80px;
+  left: 460px;
+  width: 160px;
+  height: 40px;
+  box-shadow: 0px 0px 5px #888888;
+  background-color: #fff;
+  padding: 4px;
+}
+.citySpan {
+  font-size: 16px;
+  line-height: 36px;
+}
+.weatherSpan {
+  margin-left: 4px;
+  font-size: 16px;
+  line-height: 36px;
+}
 #searchDiv {
   position: absolute;
   top: 80px;
   left: 30px;
   width: 400px;
-  box-shadow: 4px 4px 5px #888888;
+  box-shadow: 0px 0px 5px #888888;
 }
 #listDiv,
 #containDiv {
